@@ -81,6 +81,15 @@ const worker = new Worker(
   { connection: { url: env.REDIS_URL }, concurrency: 2 },
 );
 
+export async function checkReportQueueConnection(): Promise<'connected' | 'disconnected'> {
+  try {
+    await worker.waitUntilReady();
+    return 'connected';
+  } catch {
+    return 'disconnected';
+  }
+}
+
 worker.on('ready', () => logger.info('Report BullMQ worker is ready'));
 worker.on('failed', (job, error) =>
   logger.error({ error, jobName: job?.name, reportId: job?.data.reportId }, 'Report worker failed'),
