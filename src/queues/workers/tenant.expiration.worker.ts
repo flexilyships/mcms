@@ -236,6 +236,16 @@ async function cancelSubscriptionAndTenant(
   });
 }
 
+export async function checkTenantExpirationQueueConnection(): Promise<
+  'connected' | 'disconnected'
+> {
+  try {
+    await worker.waitUntilReady();
+    return 'connected';
+  } catch {
+    return 'disconnected';
+  }
+}
 worker.on('ready', () => {
   logger.info('Tenant expiration BullMQ worker is ready');
 });
