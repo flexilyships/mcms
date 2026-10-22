@@ -100,6 +100,7 @@ export async function startNotificationWorker(): Promise<void> {
     {
       pattern: '30 6 * * *',
     },
+
     {
       name: 'cleanup-expired-reports',
       data: {},

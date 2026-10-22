@@ -135,6 +135,15 @@ const worker = new Worker(
   { connection: { url: env.REDIS_URL }, concurrency: 10 },
 );
 
+export async function checkEmailQueueConnection(): Promise<'connected' | 'disconnected'> {
+  try {
+    await worker.waitUntilReady();
+    return 'connected';
+  } catch {
+    return 'disconnected';
+  }
+}
+
 worker.on('ready', () => {
   logger.info('Email BullMQ worker is ready');
 });
